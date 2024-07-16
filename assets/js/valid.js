@@ -4,39 +4,63 @@ document.addEventListener('DOMContentLoaded', (event) => {
     formulario.addEventListener('submit', (event) => {
         event.preventDefault(); // Evitar el envío inmediato del formulario
 
-        const nombre = document.getElementById('nombre').value;
-        const apellido = document.getElementById('apellido').value;
-        const email = document.getElementById('email').value;
-        const fechaNacimiento = document.getElementById('fechaNacimiento').value;
-        const paisResidencia = document.getElementById('paisResidencia').value;
+        const nombre = document.getElementById('nombre');
+        const apellido = document.getElementById('apellido');
+        const email = document.getElementById('email');
+        const fechaNacimiento = document.getElementById('fechaNacimiento');
+        const paisResidencia = document.getElementById('paisResidencia');
+
+        let valid = true;
 
         // Validaciones
-        if (!/^[a-zA-Z ]+$/.test(nombre) || !/^[a-zA-Z ]+$/.test(apellido)) {
-            alert('Nombre y apellido deben contener solo letras y espacios.');
-            return;
+        if (!/^[a-zA-Z ]+$/.test(nombre.value)) {
+            nombre.classList.add('is-invalid');
+            nombre.setAttribute('aria-invalid', 'true');
+            valid = false;
+        } else {
+            nombre.classList.remove('is-invalid');
         }
 
-        if (!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(email)) {
-            alert('Correo electrónico inválido. Debe seguir el formato: nombre@dominio.com');
-            return;
+        if (!/^[a-zA-Z ]+$/.test(apellido.value)) {
+            apellido.classList.add('is-invalid');
+            apellido.setAttribute('aria-invalid', 'true');
+            valid = false;
+        } else {
+            apellido.classList.remove('is-invalid');
         }
 
-        const fechaNacimientoUsuario = new Date(fechaNacimiento);
+        if (!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(email.value)) {
+            email.classList.add('is-invalid');
+            email.setAttribute('aria-invalid', 'true');
+            valid = false;
+        } else {
+            email.classList.remove('is-invalid');
+        }
+
+        const fechaNacimientoUsuario = new Date(fechaNacimiento.value);
         const fechaNacimientoMin = new Date();
         fechaNacimientoMin.setFullYear(fechaNacimientoMin.getFullYear() - 18);
 
         if (fechaNacimientoUsuario > fechaNacimientoMin) {
-            alert('Debes tener al menos 18 años para enviar el formulario.');
-            return;
+            fechaNacimiento.classList.add('is-invalid');
+            fechaNacimiento.setAttribute('aria-invalid', 'true');
+            valid = false;
+        } else {
+            fechaNacimiento.classList.remove('is-invalid');
         }
 
-        if (paisResidencia.trim() === '') {
-            alert('Por favor, ingrese su país de residencia.');
-            return;
+        if (paisResidencia.value.trim() === '') {
+            paisResidencia.classList.add('is-invalid');
+            paisResidencia.setAttribute('aria-invalid', 'true');
+            valid = false;
+        } else {
+            paisResidencia.classList.remove('is-invalid');
         }
 
         // Si todas las validaciones son correctas, se permite el envío del formulario
-        formulario.submit();
+        if (valid) {
+            formulario.submit();
+        }
     });
 
     // Funciones de cambio de estilo
